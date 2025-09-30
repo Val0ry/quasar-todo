@@ -174,14 +174,8 @@ export default defineConfig((/* ctx */) => {
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
-        // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-        // OS X / Mac App Store
-        // appBundleId: '',
-        // appCategoryType: '',
-        // osxSign: '',
-        // protocol: 'myapp://path',
-        // Windows only
-        // win32metadata: { ... }
+        platform: 'win32',
+        arch: 'x64',
       },
 
       builder: {
