@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Todo List</string>
-    <string name="title_activity_main">Todo List</string>
-    <string name="package_name">org.capacitor.quasar.app</string>
-    <string name="custom_url_scheme">org.capacitor.quasar.app</string>
+    <string name="app_name">Quarsar Todo</string>
+    <string name="title_activity_main">Quarsar Todo</string>
+    <string name="package_name">fr.nheta.todo.app</string>
+    <string name="custom_url_scheme">fr.nheta.todo.app</string>
 </resources>

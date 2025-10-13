@@ -1,44 +1,31 @@
 {
   "name": "quasar-todo",
   "version": "0.0.1",
-  "description": "A quasar todo list",
-  "productName": "Todo List",
-  "author": "Moi",
+  "description": "A Quasar Project",
+  "productName": "Quarsar Todo",
+  "author": "ethannmng <ethanmng.pro@gmail.com>",
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
-    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
     "postinstall": "quasar prepare"
   },
   "dependencies": {
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/core": "^7.4.3",
-    "@capacitor/ios": "^7.4.3",
     "@quasar/extras": "^1.16.4",
+    "@supabase/supabase-js": "^2.58.0",
+    "pinia": "^3.0.3",
     "quasar": "^2.16.0",
     "vue": "3.5.20",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.3",
-    "@electron/packager": "^18.4.4",
-    "@eslint/js": "^9.14.0",
+    "@electron/packager": "^18.3.2",
     "@quasar/app-vite": "^2.1.0",
-    "@vue/devtools": "^8.0.2",
-    "@vue/eslint-config-prettier": "^10.1.0",
     "autoprefixer": "^10.4.2",
     "electron": "^38.2.0",
-    "eslint": "^9.14.0",
-    "eslint-plugin-vue": "^10.4.0",
-    "globals": "^16.4.0",
-    "postcss": "^8.4.14",
-    "prettier": "^3.3.3",
-    "vite-plugin-checker": "^0.10.3",
-    "vue-eslint-parser": "^10.2.0"
+    "postcss": "^8.4.14"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22 || ^20",
