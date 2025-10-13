@@ -9,7 +9,7 @@ app.use(express.json());
 // Middleware pour gérer les CORS (Cross-Origin Resource Sharing)
 // Cela permet à votre frontend (localhost:8080 par exemple) de communiquer avec votre backend
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080'); // Remplacez par l'URL de votre frontend si différente
+  res.header('Access-Control-Allow-Origin', 'http://localhost:9000'); // Remplacez par l'URL de votre frontend si différente
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
@@ -101,8 +101,9 @@ initializeDatabase().then(() => {
   });
 
   // Démarrer le serveur
-  app.listen(PORT, () => {
-    console.log(`API REST démarrée sur http://localhost:${PORT}`);
+  const HOST = '127.0.0.1';
+  app.listen(PORT, HOST, () => {
+    console.log(`API REST démarrée sur http://${HOST}:${PORT}`);
   });
 }).catch(err => {
   console.error('Échec du démarrage du serveur:', err);

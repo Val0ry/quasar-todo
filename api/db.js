@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
   host: '127.0.0.1', // Ou l'adresse IP de votre serveur MariaDB
   user: 'root', // Votre nom d'utilisateur MariaDB
-  password: 'Voiturevelo10:', // Votre mot de passe MariaDB
+  password: 'Voiturevelo10!', // Votre mot de passe MariaDB
   database: 'MyTodoAppli', // Le nom de votre base de données
   waitForConnections: true,
   connectionLimit: 10,
