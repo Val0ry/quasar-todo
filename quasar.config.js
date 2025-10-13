@@ -14,6 +14,13 @@ export default defineConfig((/* ctx */) => {
     boot: [
     ],
 
+    // ADDED: Path for Flatpak Android Studio
+    // Make sure to replace 'VOTRE_NOM_UTILISATEUR' with your actual username.
+    // Also ensure the script '~/.local/bin/studio-flatpak.sh' exists and is executable.
+    bin: {
+      linuxAndroidStudio: '/home/admin/.local/bin/studio-flatpak.sh'
+    },
+
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: [
       'app.scss'
