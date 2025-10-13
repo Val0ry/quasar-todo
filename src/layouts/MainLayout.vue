@@ -15,7 +15,7 @@
 		<div class="text-h3">Todo</div>
 		<div class="text-subtitle1">{{ todaysDate }}</div>
 	  </div>
-	  <q-img src="/public/montagnes.jpg" class="header-image absolute-top"/>
+	  <q-img src="/montagnes.jpg" class="header-image absolute-top"/>
 	</q-header>
 
 	 <q-drawer
@@ -50,7 +50,7 @@
 		  </q-list>
 		</q-scroll-area>
 
-		<q-img class="absolute-top" src="public/montagnes.jpg" style="height: 192px">
+		<q-img class="absolute-top" src="/montagnes.jpg" style="height: 192px">
 		  	<div class="absolute-bottom bg-transparent">
 				<q-avatar size="56px" class="q-mb-sm">
 			  		<img src="https://avatars.githubusercontent.com/u/1468048284?v=4">

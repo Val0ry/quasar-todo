@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
-import { supabase } from 'boot/supabase'
+
+// L'URL de base de votre future API REST
+const API_URL = 'http://localhost:3000/api/tasks'
 
 export const useTaskStore = defineStore('tasks', {
   state: () => ({
@@ -7,13 +9,14 @@ export const useTaskStore = defineStore('tasks', {
   }),
   actions: {
     async fetchTasks() {
-      const { data, error } = await supabase
-        .from('tasks')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) console.error('Erreur de chargement:', error);
-      else this.tasks = data;
+      try {
+        const response = await fetch(API_URL)
+        if (!response.ok) throw new Error('Erreur réseau')
+        const data = await response.json()
+        this.tasks = data
+      } catch (error) {
+        console.error('Erreur de chargement des tâches:', error)
+      }
     },
 
     async addTask(taskPayload) {
@@ -34,14 +37,17 @@ export const useTaskStore = defineStore('tasks', {
         dueTime: taskPayload.dueTime  // Format HH:mm
       };
 
-      const { data, error } = await supabase
-        .from('tasks')
-        .insert([insertObj])
-        .select();
-
-      if (error) console.error('Erreur d\'ajout:', error);
-      else {
-        this.tasks.unshift(data[0]); // Ajoute la nouvelle tâche en haut de la liste
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(insertObj)
+        })
+        if (!response.ok) throw new Error('Erreur réseau')
+        const newTask = await response.json()
+        this.tasks.unshift(newTask) // Ajoute la nouvelle tâche en haut de la liste
+      } catch (error) {
+        console.error("Erreur d'ajout:", error)
       }
     },
 
@@ -51,18 +57,17 @@ export const useTaskStore = defineStore('tasks', {
         return;
       }
 
-      const { error } = await supabase
-        .from('tasks')
-        .delete()
-        .eq('id', taskToDelete.id);
-
-      if (error) {
-        console.error('Erreur de suppression:', error);
-      } else {
+      try {
+        const response = await fetch(`${API_URL}/${taskToDelete.id}`, {
+          method: 'DELETE'
+        })
+        if (!response.ok) throw new Error('Erreur réseau')
         const taskIndex = this.tasks.findIndex(t => t.id === taskToDelete.id)
         if (taskIndex !== -1) {
           this.tasks.splice(taskIndex, 1);
         }
+      } catch (error) {
+        console.error('Erreur de suppression:', error)
       }
     },
 
@@ -72,15 +77,16 @@ export const useTaskStore = defineStore('tasks', {
 
       const idsToDelete = tasksToDelete.map(task => task.id);
 
-      const { error } = await supabase
-        .from('tasks')
-        .delete()
-        .in('id', idsToDelete);
-
-      if (error) {
-        console.error('Erreur de suppression des tâches sélectionnées:', error);
-      } else {
+      try {
+        const response = await fetch(`${API_URL}/delete-multiple`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids: idsToDelete })
+        })
+        if (!response.ok) throw new Error('Erreur réseau')
         this.tasks = this.tasks.filter(task => !task.done);
+      } catch (error) {
+        console.error('Erreur de suppression des tâches sélectionnées:', error)
       }
     },
 
@@ -90,16 +96,17 @@ export const useTaskStore = defineStore('tasks', {
         return;
       }
 
-      const { error } = await supabase
-        .from('tasks')
-        .update({ done: task.done })
-        .eq('id', task.id);
-
-      if (error) {
-        console.error('Erreur de mise à jour:', error);
-      } else {
+      try {
+        const response = await fetch(`${API_URL}/${task.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ done: task.done })
+        })
+        if (!response.ok) throw new Error('Erreur réseau')
         const taskIndex = this.tasks.findIndex(t => t.id === task.id);
         if (taskIndex !== -1) this.tasks[taskIndex].done = task.done;
+      } catch (error) {
+        console.error('Erreur de mise à jour:', error)
       }
     }
   }

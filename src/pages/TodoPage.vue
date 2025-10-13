@@ -21,7 +21,7 @@
           label="Date d'échéance"
           placeholder="Date"
           filled
-          bg-color="white"
+          bg-co lor="white"
           dense
           class="col"
         >
