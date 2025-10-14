@@ -18,21 +18,20 @@
 
       <div class="row q-gutter-sm q-mt-sm">
         <q-input class="col" square filled bg-color="white" dense v-model="formattedDate" mask="##/##/####" placeholder="Date">
-        <template v-slot:append>
-          <div class="row items-center full-height">
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="newTask.dueDate" mask="YYYY-MM-DD">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </div>
-        </template>
-      </q-input>
-
+          <template v-slot:append>
+            <div class="row items-center full-height">
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="newTask.dueDate" mask="YYYY-MM-DD">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </div>
+          </template>
+        </q-input>
         <q-input class="col" square filled bg-color="white" dense v-model="newTask.dueTime" :rules="['time']" placeholder="Heure">
           <template v-slot:append>
             <div class="row items-center full-height">
@@ -50,13 +49,11 @@
     </div>
 
     <div class="q-pa-md">
-      <Task v-for="task in sortedTasks" :key="task.id" :task="task" />
+      <Task v-for="task in taskStore.tasks" :key="task.id" :task="task" class="q-mb-sm" />
     </div>
     <div v-if="!taskStore.tasks.length" class="no-tasks absolute-center">
       <q-icon name="check_circle" size="100px" color="primary" />
-      <div class="text-h5 text-primary text-center">
-        Aucune tâche
-      </div>
+      <div class="text-h5 text-primary text-center"> Aucune tâche </div>
     </div>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -73,14 +70,10 @@
 </template>
 
 <script setup>
-import { defineComponent, onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { useTaskStore } from 'stores/task_store.js'
-import Task from 'src/components/Tasks/Task.vue'
-import Sort from 'src/components/Tasks/Tools/Sort.vue'
-
-// Déclaration du composant
-defineComponent({ name: 'TodoPage' })
+import Task from 'components/Tasks/Task.vue'
 
 // Initialiser le task_store
 const taskStore = useTaskStore()
@@ -102,15 +95,13 @@ const newTask = ref({
   dueTime: getNow().time
 })
 
+// Propriété calculée pour afficher la date au format DD/MM/YYYY
 const formattedDate = computed({
   get() {
     if (!newTask.value.dueDate) return '';
     const [year, month, day] = newTask.value.dueDate.split('-');
     return `${day}/${month}/${year}`;
   },
-  set(value) {
-    // Cette partie est gérée par q-date, donc on ne fait rien ici.
-  }
 });
 
 function handleAddTask() {
@@ -121,7 +112,7 @@ function handleAddTask() {
     });
     return;
   }
-  taskStore.addTask({ ...newTask.value })
+  taskStore.addTask({ ...newTask.value });
   // On réinitialise le formulaire
   newTask.value.title = ''
   newTask.value.dueDate = getNow().date
@@ -143,29 +134,6 @@ function confirmDeleteSelected() {
     $q.notify('Tâches supprimées')
   })
 }
-
-// sorting state
-const sort = ref({ by: 'title', order: 'asc' })
-
-function onUpdateSort(payload) {
-  sort.value = payload
-}
-
-const sortedTasks = computed(() => {
-  const arr = [...taskStore.tasks]
-  const { by, order } = sort.value
-  const dir = order === 'asc' ? 1 : -1
-
-  arr.sort((a, b) => {
-    const valA = a[by] ?? ''
-    const valB = b[by] ?? ''
-
-    if (valA > valB) return dir
-    if (valA < valB) return -dir
-    return 0
-  })
-  return arr
-})
 
 onMounted(() => {
   taskStore.fetchTasks();

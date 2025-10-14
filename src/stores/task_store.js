@@ -45,7 +45,7 @@ export const useTaskStore = defineStore('tasks', {
         })
         if (!response.ok) throw new Error('Erreur réseau')
         const newTask = await response.json()
-        this.tasks.unshift(newTask) // Ajoute la nouvelle tâche en haut de la liste
+        await this.fetchTasks(); // Recharge les tâches pour conserver le tri
       } catch (error) {
         console.error("Erreur d'ajout:", error)
       }
@@ -62,10 +62,7 @@ export const useTaskStore = defineStore('tasks', {
           method: 'DELETE'
         })
         if (!response.ok) throw new Error('Erreur réseau')
-        const taskIndex = this.tasks.findIndex(t => t.id === taskToDelete.id)
-        if (taskIndex !== -1) {
-          this.tasks.splice(taskIndex, 1);
-        }
+        await this.fetchTasks(); // Recharge les tâches pour conserver le tri
       } catch (error) {
         console.error('Erreur de suppression:', error)
       }
@@ -84,7 +81,7 @@ export const useTaskStore = defineStore('tasks', {
           body: JSON.stringify({ ids: idsToDelete })
         })
         if (!response.ok) throw new Error('Erreur réseau')
-        this.tasks = this.tasks.filter(task => !task.done);
+        await this.fetchTasks(); // Recharge les tâches pour conserver le tri
       } catch (error) {
         console.error('Erreur de suppression des tâches sélectionnées:', error)
       }

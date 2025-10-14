@@ -34,15 +34,11 @@ function toggleTask() {
 }
 
 const formattedDueDate = computed(() => {
-	const due = props.task?.dueDate
-	if (!due) return ''
+	if (!props.task?.dueDate) return '';
 
-	// Gère le format YYYY-MM-DD pour éviter les problèmes de fuseau horaire
-	const parts = due.split('-')
-	if (parts.length !== 3) return due // Retourne la date originale si le format est inattendu
-
-	const [year, month, day] = parts
-
+	// La date arrive de la BDD au format ISO (ex: 2025-10-13T00:00:00.000Z)
+	// ou YYYY-MM-DD. On ne garde que la partie avant le 'T'.
+	const [year, month, day] = props.task.dueDate.split('T')[0].split('-');
 	return `${day}/${month}/${year}`
 })
 

@@ -7,7 +7,14 @@ const pool = mysql.createPool({
   database: 'MyTodoAppli', // Le nom de votre base de données
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  // Ajout de la conversion de type pour les booléens
+  typeCast: function (field, next) {
+    if (field.type === 'TINY' && field.length === 1) {
+      return (field.string() === '1'); // '1' => true, '0' => false
+    }
+    return next();
+  }
 });
 
 async function initializeDatabase() {
